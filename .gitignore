@@ -1,5 +1,9 @@
 target/*
+.idea/*
 encoded_file
-origin
+decoded_file
 out
+file1
+file2
+file3
 
