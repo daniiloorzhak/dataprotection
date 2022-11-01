@@ -77,7 +77,20 @@ public class Crypto {
         return res;
     }
 
-    public static long dhke(long Xa, long Xb, long p, long g) {
+    public static long dhke(long Xa, long Xb) {
+        long p = genRandomPrimeNum(1_000, 1_000_000_000);
+        long q = (p - 1) / 2;
+        while (!(isPrime(p) && isPrime(q))) {
+            p = genRandomPrimeNum(1_000, 1_000_000_000);
+            q = (p - 1) / 2;
+        }
+        long g = 1;
+        for (long i = genRandomPrimeNum(1_000, p - 1);; i = genRandomPrimeNum(1_000, p - 1)) {
+           if (Crypto.modExp(i, q, p) != 1L) {
+               g = i;
+               break;
+           }
+        }
         long Ya = modExp(g, Xa, p);
         long Yb = modExp(g, Xb, p);
         long Zab = modExp(Yb, Xa, p);
@@ -187,15 +200,16 @@ public class Crypto {
             in.close();
             out.close();
         } catch (FileNotFoundException e) {
-
+            System.out.println(1);
         } catch (IOException e) {
-
+            System.out.println(2);
         }
     }
 
 
     public static void encodeFileRSA(String inFilePath, String outFilePath, long N, long d) {
         try {
+            
             FileOutputStream outFile = new FileOutputStream(outFilePath);
             FileInputStream inFile = new FileInputStream(inFilePath);
             DataOutputStream out = new DataOutputStream(outFile);
@@ -230,10 +244,11 @@ public class Crypto {
             in.close();
             out.close();
         } catch (FileNotFoundException e) {
-
+            System.out.println(1);
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
+
     }
 
     public static List<Long> encodeFileVernam(String inFilePath, String outFilePath) {
@@ -325,9 +340,9 @@ public class Crypto {
             in.close();
             out.close();
         } catch (FileNotFoundException e) {
-
+            System.out.println(1);
         } catch (IOException e) {
-
+            System.out.println(2);
         }
     }
 }
